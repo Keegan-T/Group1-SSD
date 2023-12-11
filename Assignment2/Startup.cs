@@ -40,6 +40,11 @@ namespace Assignment2
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "DENY");
+                await next();
+            });
             app.UseStaticFiles();
 
             app.UseRouting();

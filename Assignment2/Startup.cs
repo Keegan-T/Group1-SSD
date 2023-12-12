@@ -27,6 +27,8 @@ namespace Assignment2
             services.AddControllersWithViews();
             services.AddDbContext<northwindContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +45,7 @@ namespace Assignment2
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Frame-Options", "DENY");
+                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'");
                 await next();
             });
             app.UseStaticFiles();
